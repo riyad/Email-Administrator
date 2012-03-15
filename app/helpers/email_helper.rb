@@ -11,6 +11,14 @@ module EmailHelper
     email.sub(/@.*/,"")
   end
 
+  def receive_badge(email)
+    image_tag("email-can-receive.png") if email.can_receive?
+  end
+
+  def send_badge(email)
+    image_tag("email-can-send.png") if email.can_send?
+  end
+
   def forwards_badge(email)
     image_tag("email-forwards.png")+content_tag(:span, email.forwards.count, :class => "label label-info") unless email.forwards.empty?
   end
