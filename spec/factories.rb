@@ -60,15 +60,7 @@ Factory.define :email_expired , :class => :email do |email|
   email.domain_id             1
 end
 
-Factory.sequence(:domain_name) do |n|
-  "#{n}example.com"
-end
-
-Factory.define :domain_seq, :class => :domain do |d|
- d.name Factory.next(:domain_name)
-end
-
-Factory.define :domain do |d|
- d.name "test.com"
+Factory.define :domain, :class => :domain do |d|
+ d.sequence(:name) { |n| "example#{n}.tld" }
 end
 
