@@ -1,5 +1,5 @@
 module DomainHelper
-  def user_count_badge(domain)
-    image_tag("email-forwards.png")+content_tag(:span, domain.count_users_of_domain, :class => "label label-info")
+  def emails_badge(domain)
+    image_tag("domain-emails.png")+content_tag(:span, domain.emails.count, :class => "label")
   end
 end
