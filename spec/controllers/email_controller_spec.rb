@@ -66,10 +66,7 @@ describe EmailsController do
       @email_expires_reminder_send = Factory(:email_expires_reminder_send)
       @email_expired = Factory(:email_expired)
       @emails_are_expiring_soon = Email.get_emails_expires_soon
-      @emails_are_expired = Email.get_emails_expired
     end
-    #let(:emails)  {Email.get_emails_expires_soon}
-    #let(:emails_are_expired)  {Email.get_emails_expired}
     
     it "and should contains email which expires soon" do
       @emails_are_expiring_soon[0].email.should eql @email_expires_in_two_days.email
@@ -85,28 +82,21 @@ describe EmailsController do
     it "and emails are marked as reminded" do
       @emails_are_expiring_soon.empty?.should be_false 
       @emails_are_expiring_soon.each do |email|
-        email.set_reminder_sent(true);
+        email.reminder_sent = true
       end
       
-      @emails_are_expiring_soon.each do |email|
-        email.reminder_sent.should be_true 
-      end
+      @emails_are_expiring_soon.all(&:reminder_sent).should be_true
     end
-    
+
     it "and deactivate email when it is expired" do
-      @emails_are_expired.empty?.should be_false
+      expired_emails = Email.to_be_expired
+      expired_emails.empty?.should be_false
        
-      @emails_are_expired.each do |email|
-        email.deactivate
+      expired_emails.each do |e|
+        e.active = false
       end
-      
-      @emails_are_expired.each do |email|
-        email.active.should be_false
-      end
-      
+
+      expired_emails.all(&:active).should be_true
     end
-    
-    
   end
-  
 end
