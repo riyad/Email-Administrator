@@ -19,7 +19,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <a class="brand" href="/">Email Administrator</a>
+        <%= link_to "Email Administrator", root_path, :class => "brand" %>
         <div class="nav-collapse">
         	<% if email_signed_in? %>
 	          <ul class="nav">
@@ -36,41 +36,39 @@
     </div>
   </div>
 
-  <div class="container">
-  	 <div class="span12">
+  <div class="container-fluid">
+    <div id="flash">
   		<% if flash[:notice] %>
-	  		<div class="alert">
-			  <a class="close" data-dismiss="alert">×</a>
-			  <%= flash[:notice] %>
-			</div>
+	  		<div class="alert alert-info">
+			    <a class="close" data-dismiss="alert">×</a>
+			    <%= flash[:notice] %>
+			  </div>
 	    <% end %>
 	    <% if flash[:error] %>
 	     	<div class="alert alert-error">
-			  <a class="close" data-dismiss="alert">×</a>
-			  <%= flash[:error] %>
-			</div>
+			    <a class="close" data-dismiss="alert">×</a>
+			    <%= flash[:error] %>
+			  </div>
 	    <% end %>
 	    <% if flash[:alert] %>
 	     	<div class="alert alert-error">
-			  <a class="close" data-dismiss="alert">×</a>
-			  <%= flash[:alert] %>
-			</div>
+  			  <a class="close" data-dismiss="alert">×</a>
+  			  <%= flash[:alert] %>
+  			</div>
 	    <% end %>
     </div>
-    <div class="span12">
+    <div id="content">
   		<%= yield %>
   	</div>
   </div>
-  <%- if Rails.env.development? %>
-  <div class="container">
-	  <div class="span9">
-	      	<% flash.each do |key, value| %>
-	          <div class="alert alert-<%= key %>"><%= value %></div>
-	        <% end %>
-	        <h2>Console</h2>
-	        <%= debug(params)  %>
-	  <%- end%>
-  </div>
-  </div>
+  <% if Rails.env.development? %>
+    <div class="container-fluid">
+	  	<% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>"><%= value %></div>
+      <% end %>
+      <h2>Console</h2>
+      <%= debug(params)  %>
+    </div>
+	<% end %>
 </body>
 </html>
