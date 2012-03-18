@@ -3,6 +3,11 @@ class Email < ActiveRecord::Base
 
   devise :database_authenticatable, :recoverable, :lockable
 
+  scope :active, where(:active => true)
+  scope :inactive, where(:active => false)
+  scope :expired, active.where("expires_on <= ?", Date.today)
+  scope :to_be_expired, inactive.where("expires_on <= ?", Date.today)
+
   # access and validation
 
   attr_accessible :email, :password, :password_confirmation, :comment, :expires_on, :email_path, :forwards, :alt_email, :reminder_sent, :active, :domain_id, :last_activity_on, :admin, :can_receive, :can_send
@@ -23,18 +28,6 @@ class Email < ActiveRecord::Base
   #static methods
   def self.get_emails_expires_soon
     Email.where("expires_on <= ? and reminder_sent = ? and active = ? and admin = ?",(Date.today + 14.days),false,true,false)
-  end
-  
-  def self.get_emails_expired
-    Email.where("expires_on <= ? and active = ?",Time.now.midnight+1.days,true)
-  end
- 
-  def set_reminder_sent(value)
-    self.update_attributes(:reminder_sent => value)
-  end
-  
-  def deactivate
-    self.update_attributes(:active => false)
   end
   
   def self.search(search)
