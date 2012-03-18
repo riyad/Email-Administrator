@@ -1,7 +1,5 @@
 %tr{ :class => active_class(email) }
-  %td= prefix_for(email.email)
-  %td @
-  %td= email.domain.name
+  %td= email.email
   %td= form_date_for_expires_on(email.expires_on)
   %td= form_date_for_last_activity_on(email.last_activity_on)
   %td= admin_badge(email)
