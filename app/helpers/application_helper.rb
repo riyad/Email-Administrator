@@ -1,9 +1,9 @@
 module ApplicationHelper
   def sortable(column, title = nil)
     title ||= column.titleize
-    css_class = column == sort_column ? "current #{sort_direction}" : nil
+    sort_icon = column == sort_column ? content_tag(:i, nil, class: (sort_direction == "asc" ? "icon-chevron-down" : "icon-chevron-up")) : ""
     direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
-    link_to title, params.merge(:sort => column, :direction => direction, :page => nil), {:class => css_class}
+    link_to raw(title+" "+sort_icon), params.merge(:sort => column, :direction => direction, :page => nil)
   end
   
   class BootstrapLinkRenderer < ::WillPaginate::ActionView::LinkRenderer
