@@ -12,14 +12,8 @@
  *= require_tree .
 */
 
-.well.panel {
-  margin-left: auto;
-  margin-right: auto;
-  clear: both;
-  float: none;
-  margin-top: 50px;
-}
-
-.float-left {
-  float:left;
+.btn, .table td {
+  img {
+    vertical-align: bottom;
+  }
 }
