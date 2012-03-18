@@ -6,10 +6,6 @@ class EmailsController < ApplicationController
     @emails = Email.search(params[:search]).order(sort_column + " " + sort_direction).paginate(:per_page => 20, :page => params[:page])
   end
 
-  def show
-    @email = Email.find(params[:id])
-  end
-
   def edit
     @email = Email.find(params[:id])
     @domains = Domain.all
