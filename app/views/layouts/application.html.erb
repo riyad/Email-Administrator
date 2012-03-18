@@ -38,23 +38,14 @@
 
   <div class="container-fluid">
     <div id="flash">
-  		<% if flash[:notice] %>
-	  		<div class="alert alert-info">
-			    <a class="close" data-dismiss="alert">×</a>
-			    <%= flash[:notice] %>
-			  </div>
-	    <% end %>
-	    <% if flash[:error] %>
-	     	<div class="alert alert-error">
-			    <a class="close" data-dismiss="alert">×</a>
-			    <%= flash[:error] %>
-			  </div>
-	    <% end %>
-	    <% if flash[:alert] %>
-	     	<div class="alert alert-error">
-  			  <a class="close" data-dismiss="alert">×</a>
-  			  <%= flash[:alert] %>
-  			</div>
+	  	<% flash.each do |key, value| %>
+    		<% if key == :notice %>
+  	  		<div class="alert alert-info"><%= value %></div>
+  	    <% elsif key == :error %>
+  	     	<div class="alert alert-error"><%= value %></div>
+  	    <% else %>
+    	    <div class="alert"><%= value %></div>
+  	    <% end %>  
 	    <% end %>
     </div>
     <div id="content">
