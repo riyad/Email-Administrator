@@ -9,13 +9,13 @@ describe "Email pages" do
     @admin = Factory(:admin)
     visit email_session_path
     fill_in "email_email",  with: @admin.email
-    fill_in "email_password",         with: @admin.password
+    fill_in "email_password",  with: @admin.password
     click_button "Sign in"
     
     @domains = Array.new
     
     10.times {
-      @domains.push(Factory.create :domain_seq)
+      @domains.push(Factory.create :domain)
     }
     
     @example_email = Factory(:email)
