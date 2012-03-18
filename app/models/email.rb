@@ -1,22 +1,25 @@
 class Email < ActiveRecord::Base
+  belongs_to :domain
+
   devise :database_authenticatable, :recoverable, :lockable
 
+  # access and validation
+
   attr_accessible :email, :password, :password_confirmation, :comment, :expires_on, :email_path, :forwards, :alt_email, :reminder_sent, :active, :domain_id, :last_activity_on, :admin, :can_receive, :can_send
-  belongs_to :domain
 
   validates :email, :presence => true ,:format => { :with => /^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$/i,
     :message => "%{value} has invalid format" }
-  validates :password, :presence => {:message => '- Password cannot be blank'}, :if => :password_validation_required?
+  validates :password, :presence => true, :if => :password_validation_required?
   validates :email_path, :presence => true
-  validates :domain_id, :presence => {:message => '- Domain cannot be blank'}
-  validates :alt_email, :presence => {:message => '- If email can expire, the alternative email must be set'}, :if => "not expires_on.blank?"
+  validates :domain_id, :presence => true
   validates_associated :domain
 
+  validates :alt_email, :presence => {:message => '- If email can expire, the alternative email must be set'}, :if => "not expires_on.blank?"
   validates :alt_email, :format => { :with => /^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$/i,
     :message => "- Alternative email: %{value} has invalid format" },:allow_blank => true, :allow_nil => true
-    
-  before_validation :convert_email  
-  
+
+  before_validation :convert_email
+
   #static methods
   def self.get_emails_expires_soon
     Email.where("expires_on <= ? and reminder_sent = ? and active = ? and admin = ?",(Date.today + 14.days),false,true,false)
