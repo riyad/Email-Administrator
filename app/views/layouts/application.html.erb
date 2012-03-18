@@ -28,7 +28,7 @@
 		            <li><%= link_to "Stats" %></li>
 	          </ul>
 	          <ul class="nav pull-right">
-	            <li><%= link_to "Logout", destroy_email_session_path, :method => :delete%></li>
+	            <li><%= link_to raw('<i class="icon-off icon-white"></i> Logout'), destroy_email_session_path, :method => :delete%></li>
 	          </ul>
         	<% end %>
         </div>
