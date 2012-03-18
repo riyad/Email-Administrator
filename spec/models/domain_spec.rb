@@ -10,22 +10,33 @@ describe Domain do
   it {should respond_to(:name)}
   
   it {@domain.should be_valid }
-  
-  describe "new domain" do
-    describe "and with empty name" do
-      before{@domain.name = nil}
-      it {@domain.should_not be_valid}
-    end
-    
-    describe "and with invalid name (email address)" do
-      before{@domain.name = "sdfsdf@sdfsdf.de"}
-      it {@domain.should_not be_valid}
-    end
-     
-    describe "and with invalid name (not valid domain)" do
-      before{@domain.name = "sdfsdf"}
-      it {@domain.should_not be_valid}
+
+  describe "validtion of" do
+    describe "name" do
+      it "should fail without it" do
+        domain = Domain.new(:name => "")
+
+        domain.should_not be_valid
+        domain.should have_at_least(1).error_on(:name)
+      end
+
+      it "should succeed with IP address" do
+        domain = Domain.new(:name => "127.0.0.1")
+
+        domain.should be_valid
+      end
+
+      it "should succeed with hostname" do
+        domain = Domain.new(:name => "localhost")
+
+        domain.should be_valid
+      end
+
+      it "should succeed with FQDN" do
+        domain = Domain.new(:name => "mail1.example.tld")
+
+        domain.should be_valid
+      end
     end
   end
-  
 end
