@@ -11,6 +11,7 @@ class Email < ActiveRecord::Base
   # access and validation
 
   attr_accessible :email, :password, :password_confirmation, :comment, :expires_on, :email_path, :forwards, :alt_email, :reminder_sent, :active, :domain_id, :last_activity_on, :admin, :can_receive, :can_send
+  attr_reader :prefix
 
   validates :email, :presence => true ,:format => { :with => /^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$/i,
     :message => "%{value} has invalid format" }
@@ -30,6 +31,10 @@ class Email < ActiveRecord::Base
     Email.where("expires_on <= ? and reminder_sent = ? and active = ? and admin = ?",(Date.today + 14.days),false,true,false)
   end
   
+  def prefix
+    email.split("@").first if email
+  end
+
   def self.search(search)
     if search
       where('email LIKE ?', "%#{search}%")
@@ -95,9 +100,5 @@ class Email < ActiveRecord::Base
   
   def password_validation_required?
     self.encrypted_password.blank? || !self.password.blank?
-  end
-  
-  def get_email_prefix(email)
-    email.sub(/@.*/,"")
   end
 end
