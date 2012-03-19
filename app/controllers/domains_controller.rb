@@ -16,9 +16,7 @@ class DomainsController < ApplicationController
   def update
     @domain = Domain.find(params[:id])
     if @domain.update_attributes(params[:domain])
-      Email.find_all_by_domain_id(params[:id]).each do |e|
-        e.domain = @domain
-      end
+      @domain.emails.each(&:update_domain!)
       flash[:notice] = 'Domain was successfully updated.'
       redirect_to :action => 'index'
     else
@@ -39,7 +37,7 @@ class DomainsController < ApplicationController
     @domain = Domain.new(params[:domain])
     if @domain.save
       flash[:notice] = 'Domain was successfully created.'
-      redirect_to :action => 'index', notice: 'Domain was successfully created.'
+      redirect_to :action => 'index'
     else
       flash[:error] = 'Enter correct domain name'
       redirect_to [:new,:domain]
@@ -47,13 +45,9 @@ class DomainsController < ApplicationController
   end
   
   def destroy
-    e = Email.find_all_by_domain_id(params[:id])
-    e.each do |e|
-      e.destroy
-    end
-    flash[:notice] = 'Domain was successfully deleted.'
-    Domain.find(params[:id]).destroy
-    redirect_to :action => 'index'
+    @domain = Domain.find(params[:id])
+    @domain.destroy # will also destroy belonging emails
+    flash[:notice] = "#{@domain.name} and all associated emails were successfully deleted."
+    redirect_to domains_path
   end
-  
 end
