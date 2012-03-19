@@ -1,5 +1,5 @@
 class Domain < ActiveRecord::Base
-  has_many :emails
+  has_many :emails, :dependent => :destroy
 
   default_scope order("name")
 
