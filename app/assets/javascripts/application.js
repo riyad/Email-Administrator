@@ -14,3 +14,15 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require_tree .
+
+$(function() {
+  // show tooltips even if parts of the page have been loaded by ajax
+  $('#content').on({
+    mouseenter: function(event) {
+      $(this).tooltip('show');
+    },
+    mouseleave: function(event) {
+      $(this).tooltip('hide');
+    }
+  }, '[rel~=tooltip]');
+});
