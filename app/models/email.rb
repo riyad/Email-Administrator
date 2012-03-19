@@ -17,14 +17,14 @@ class Email < ActiveRecord::Base
     :message => "%{value} has invalid format" }
   validates :password, :presence => true, :if => :password_validation_required?
   validates :email_path, :presence => true
-  validates :domain_id, :presence => true
-  validates_associated :domain
+  validates :domain, :presence => true
 
   validates :alt_email, :presence => {:message => '- If email can expire, the alternative email must be set'}, :if => "not expires_on.blank?"
   validates :alt_email, :format => { :with => /^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$/i,
     :message => "- Alternative email: %{value} has invalid format" },:allow_blank => true, :allow_nil => true
 
   before_validation :convert_email
+  before_save :compose_email
 
   #static methods
   def forwards
@@ -72,6 +72,9 @@ class Email < ActiveRecord::Base
     EmailMailer.expires_email(self).deliver
   end
 
+  def update_domain!
+    compose_email
+    save
   end
 
   alias :devise_valid_password? :valid_password?
@@ -87,10 +90,8 @@ class Email < ActiveRecord::Base
   
   private
   
-  def convert_email
-    domain_value = Domain.find(self.domain_id).name
-    self.email = get_email_prefix(self.email)
-    self.email = self.email + '@' + domain_value
+  def compose_email
+    self.email = prefix + '@' + domain.name
   end
   
   def password_validation_required?
