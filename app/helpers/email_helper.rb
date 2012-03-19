@@ -11,8 +11,8 @@ module EmailHelper
     image_tag("email-expires-on.png") + l(expires_on) if expires_on
   end
   
-  def form_date_for_last_activity_on(last_activity)
-    image_tag("email-expires-on.png") + l(last_activity.to_date) if last_activity
+  def last_activity_for(email)
+    content_tag :span, time_ago_in_words(email.last_activity_on)+" ago", :title => l(email.last_activity_on), :rel => "tooltip" if email.last_activity_on
   end    
 
   def forwards_badge(email)

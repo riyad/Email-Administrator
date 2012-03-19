@@ -1,7 +1,7 @@
 %tr{ :class => active_class(email) }
   %td= email.email
   %td= form_date_for_expires_on(email.expires_on)
-  %td= form_date_for_last_activity_on(email.last_activity_on)
+  %td= last_activity_for(email)
   %td= admin_badge(email)
   %td= receive_badge(email)
   %td= send_badge(email)
