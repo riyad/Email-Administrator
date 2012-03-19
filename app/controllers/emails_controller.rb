@@ -9,7 +9,6 @@ class EmailsController < ApplicationController
   def edit
     @email = Email.find(params[:id])
     @domains = Domain.all
-    @domain = @email.domain
   end
 
   def update
@@ -19,7 +18,6 @@ class EmailsController < ApplicationController
       redirect_to emails_path
     else
       @domains = Domain.all
-      @domain = Domain.find(params[:email][:domain_id])
       render 'edit' #redirect_to [:edit,@email]
     end
   end
