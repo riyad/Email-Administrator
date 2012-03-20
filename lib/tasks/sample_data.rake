@@ -7,7 +7,7 @@ namespace :db do
       name  = Faker::Internet.domain_name
       Domain.create!(name: name)  
     end
-    Email.create!(email: "ich@sauli.de", password: "foobar", domain_id: 1,admin: "true", email_path: "#{APP_CONFIG["email_default_save_path"]}ich@sauli.de", :expires_on => 10.day.from_now, alt_email: "moritz.bode@gmail.com")
+    Email.create!(email: "ich@sauli.de", password: "foobar", domain_id: 1,admin: "true", email_path: "#{APP_CONFIG["maildir_base"]}ich@sauli.de", :expires_on => 10.day.from_now, alt_email: "moritz.bode@gmail.com")
     60.times do |n|
       # :address, :password, :comment, :expires, :path, :foward_email, :receive, :alt_email 
       data = Hash.new
@@ -17,7 +17,7 @@ namespace :db do
       data[:comment] = Faker::Lorem.words(n+10)
       data[:expires_on] = n.day.from_now + rand(1...200)
       data[:domain_id] = domain.id
-      data[:email_path] = "#{APP_CONFIG["email_default_save_path"]}#{data[:email]}@#{domain.name}"
+      data[:email_path] = "#{APP_CONFIG["maildir_base"]}#{data[:email]}@#{domain.name}"
       data[:forwards] = Faker::Internet.email if (n%3).zero?
       data[:can_receive] = (n%2).zero?
       data[:can_send] = (n%3).zero?

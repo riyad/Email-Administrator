@@ -1,4 +1,4 @@
 background_task_interval: "23h"
 email_log_file_path: "/var/log/mail.info"
-email_default_save_path: "/tmp/mails/"
 email_default_expires_in: 50
+maildir_base: "/tmp/mails/"

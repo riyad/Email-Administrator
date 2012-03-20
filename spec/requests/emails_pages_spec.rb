@@ -28,7 +28,7 @@ describe "Email pages" do
   describe "new page" do
     before { visit new_email_path }
     
-    it { find_field('email[email_path]').value.should == APP_CONFIG["email_default_save_path"] }
+    it { find_field('email[email_path]').value.should == APP_CONFIG["maildir_base"] }
   end
   
   describe "edit page" do

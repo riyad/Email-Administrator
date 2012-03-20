@@ -20,7 +20,7 @@ module EmailHelper
   end
 
   def maildir_for(email)
-    email.email_path || File.join(APP_CONFIG["email_default_save_path"], email.email || "")
+    email.email_path || File.join(APP_CONFIG["maildir_base"], email.email || "")
   end
 
   def prefix_for(email)
