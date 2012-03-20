@@ -44,7 +44,7 @@
         = f.label :expires_on
         = f.text_field :expires_on
         = f.label :email_path
-        = f.text_field :email_path
+        = f.text_field :email_path, :value => maildir_for(@email)
       %p
         = f.submit :class => "submit_btn btn btn-primary"
   
