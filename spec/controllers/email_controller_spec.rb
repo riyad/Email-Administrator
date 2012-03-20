@@ -26,8 +26,11 @@ describe EmailsController do
   
   describe "Email can be updated" do
     describe "if password is not provided" do
-      before { @email.password = "";@email.password_confirmation =""}
-      it{@email.should be_valid}
+      before do
+        @email.password = ""
+        @email.password_confirmation = ""
+      end
+      it{ @email.should be_valid }
     end
   end
   
@@ -40,7 +43,7 @@ describe EmailsController do
       @send_email.body.include?(@token).should be_true
     end
     it "and token is in db" do
-      @email.reset_password_token.should_not nil
+      @email.reset_password_token.should_not be_nil
     end
   end
   
@@ -69,18 +72,18 @@ describe EmailsController do
     end
     
     it "and should contains email which expires soon" do
-      @emails_are_expiring_soon[0].email.should eql @email_expires_in_two_days.email
-      @emails_are_expiring_soon.count.should be == 1    
-    end 
+      @emails_are_expiring_soon[0].email.should == @email_expires_in_two_days.email
+      @emails_are_expiring_soon.count.should be == 1
+    end
     
     it "and should not contains email for which a reminder was already sent" do
-      @emails_are_expiring_soon.count.should be == 1   
-      @emails_are_expiring_soon[0].email.should_not eql @email_expires_reminder_send.email
+      @emails_are_expiring_soon.count.should == 1
+      @emails_are_expiring_soon[0].email.should_not == @email_expires_reminder_send.email
     end
     
     # Normally reminder email should be sent, but include in the test case
     it "and emails are marked as reminded" do
-      @emails_are_expiring_soon.empty?.should be_false 
+      @emails_are_expiring_soon.should_not be_empty
       @emails_are_expiring_soon.each do |email|
         email.reminder_sent = true
       end
@@ -90,7 +93,7 @@ describe EmailsController do
 
     it "and deactivate email when it is expired" do
       expired_emails = Email.to_be_expired
-      expired_emails.empty?.should be_false
+      expired_emails.should_not be_empty
        
       expired_emails.each do |e|
         e.active = false
